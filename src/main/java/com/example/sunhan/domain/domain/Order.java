@@ -25,10 +25,10 @@ public class Order {
     private User user;
 
     @Column(name = "quantity")
-    private Long quantity;
+    private int quantity;
 
     @Builder
-    Order(Store store, User user, Long quantity) {
+    Order(Store store, User user, int quantity) {
         this.store = store;
         this.user = user;
         this.quantity = quantity;
@@ -38,7 +38,7 @@ public class Order {
         this.quantity -= 1;
     }
 
-    void updateQuantity(Long quantity) {
+    void updateQuantity(int quantity) {
         this.quantity = quantity;
     }
 }
