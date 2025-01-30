@@ -21,16 +21,16 @@ public class Coupon extends BaseEntity {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "order_id")
-    private Order order;
+    @JoinColumn(name = "payment_id")
+    private Payment payment;
 
     @Column(name = "used_at")
     @DateTimeFormat
     private LocalDateTime usedAt;
 
     @Builder
-    Coupon(Order order, LocalDateTime usedAt) {
-        this.order = order;
+    Coupon(Payment payment, LocalDateTime usedAt) {
+        this.payment = payment;
         this.usedAt = usedAt;
     }
 }

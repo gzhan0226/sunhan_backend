@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access =  AccessLevel.PROTECTED)
-public class Order {
+public class Payment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,17 +28,17 @@ public class Order {
     private int quantity;
 
     @Builder
-    Order(Store store, User user, int quantity) {
+    Payment(Store store, User user, int quantity) {
         this.store = store;
         this.user = user;
         this.quantity = quantity;
     }
 
-    void reduceQuantity() {
+    public void reduceQuantity() {
         this.quantity -= 1;
     }
 
-    void updateQuantity(int quantity) {
+    public void updateQuantity(int quantity) {
         this.quantity = quantity;
     }
 }
