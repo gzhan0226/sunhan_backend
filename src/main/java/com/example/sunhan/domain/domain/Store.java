@@ -23,6 +23,9 @@ public class Store {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Column(name = "store_code")
+    private String storeCode;
+
     @Column(name = "phone_number")
     private String phoneNumber;
 
@@ -30,10 +33,11 @@ public class Store {
     private String address;
 
     @Builder
-    Store(String name, User user, String phoneNumber, String address) {
+    Store(String name, User user, String phoneNumber, String address, String storeCode) {
         this.name = name;
         this.user = user;
         this.phoneNumber = phoneNumber;
         this.address = address;
+        this.storeCode = storeCode;
     }
 }

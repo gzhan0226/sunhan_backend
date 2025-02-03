@@ -68,6 +68,7 @@ public class PaymentTests {
                 .address("test address")
                 .phoneNumber("test number")
                 .user(owner)
+                .storeCode("111")
                 .build();
 
         storeRepository.save(store);
@@ -97,7 +98,7 @@ public class PaymentTests {
     @Test
     @DisplayName("쿠폰 사용 테스트")
     @Transactional
-    void useCoupon_ShouldSaveCouponAndIncreaseQuantity() {
+    void useCoupon_ShouldSaveCouponAndDecreaseQuantity() {
         Long userId = donate.getId();
         Long storeId = store.getId();
 
@@ -107,7 +108,7 @@ public class PaymentTests {
 
         //쿠폰 사용
         for (int i=0;i<100; i++) {
-            couponService.useCoupon(payment.getId());
+            couponService.useCoupon(payment.getId(), "111");
         }
 
         List<Coupon> coupons = couponRepository.findAll();
