@@ -21,17 +21,18 @@ public class PaymentService {
     private final StoreRepository storeRepository;
 
     public void createPayment(Long storeId, Long userId, int quantity) {
-       User user = userRepository.findById(userId)
+
+        User user = userRepository.findById(userId)
                .orElseThrow(()->new NotFoundException("User Not Found"));
-       Store store = storeRepository.findById(storeId)
+        Store store = storeRepository.findById(storeId)
                .orElseThrow(()->new NotFoundException("Store Not Found"));
 
-       Payment payment = Payment.builder()
+        Payment payment = Payment.builder()
                .store(store)
                .user(user)
                .quantity(quantity)
                .build();
 
-       paymentRepository.save(payment);
+        paymentRepository.save(payment);
     }
 }
