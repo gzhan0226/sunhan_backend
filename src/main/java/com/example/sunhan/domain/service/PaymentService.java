@@ -35,4 +35,12 @@ public class PaymentService {
 
         paymentRepository.save(payment);
     }
+
+    public void createStoreInvitement(Long userId, int quantity) { // 사용자 -> 가게
+
+    }
+
+    public void createUserInvitement(Long storeId, int quantity) { // 가게 -> 사용자
+
+    }
 }

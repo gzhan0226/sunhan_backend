@@ -89,6 +89,7 @@ public class PaymentTests {
         assertEquals(1, payments.size());
 
         Payment payment = payments.get(0);
+        System.out.println(payment.getStatus());
         assertEquals(storeId, payment.getStore().getId());
         assertEquals(userId, payment.getUser().getId());
         assertEquals(100, payment.getQuantity());

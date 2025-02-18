@@ -1,6 +1,7 @@
 package com.example.sunhan.domain.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,11 +28,20 @@ public class Payment {
     @Column(name = "quantity")
     private int quantity;
 
+    @Column(name = "uuid_code")
+    private String uuidCode;
+
+    @Column(name = "status")
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus status;
+
     @Builder
-    Payment(Store store, User user, int quantity) {
+    Payment(Store store, User user, int quantity, String uuidCode, PaymentStatus status) {
         this.store = store;
         this.user = user;
         this.quantity = quantity;
+        this.uuidCode = uuidCode;
+        this.status = status;
     }
 
     public void reduceQuantity() {
@@ -40,5 +50,16 @@ public class Payment {
 
     public void updateQuantity(int quantity) {
         this.quantity = quantity;
+    }
+
+    public void updateStore(Store store) {
+        this.store = store;
+    }
+    public void updateUser(User user) {
+
+        this.user = user;
+    }
+    public void updateStatus(PaymentStatus status) {
+        this.status = status;
     }
 }
