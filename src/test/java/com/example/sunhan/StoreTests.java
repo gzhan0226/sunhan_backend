@@ -2,7 +2,6 @@ package com.example.sunhan;
 
 import com.example.sunhan.domain.domain.Store;
 import com.example.sunhan.domain.domain.User;
-import com.example.sunhan.domain.dto.store.CreateStoreRequestDto;
 import com.example.sunhan.domain.repository.StoreRepository;
 import com.example.sunhan.domain.repository.UserRepository;
 import com.example.sunhan.domain.service.StoreService;
@@ -56,11 +55,9 @@ public class StoreTests {
     @Transactional
     void createStore_ShouldSaveStore() {
         Long userId = owner.getId();
-
         //가게 생성
         for(int i=1;i<101;i++) {
-            CreateStoreRequestDto createStoreRequestDto = new CreateStoreRequestDto(userId, "test store " + i, "12341234", "test address" +i);
-            storeService.createStore(createStoreRequestDto);
+            storeService.createStore(userId, "test store " + i, "12341234", "test address" +i);
         }
 
         //저장된 가게 확인

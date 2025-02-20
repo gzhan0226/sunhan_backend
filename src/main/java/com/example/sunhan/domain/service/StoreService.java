@@ -2,7 +2,6 @@ package com.example.sunhan.domain.service;
 
 import com.example.sunhan.domain.domain.Store;
 import com.example.sunhan.domain.domain.User;
-import com.example.sunhan.domain.dto.store.CreateStoreRequestDto;
 import com.example.sunhan.domain.exception.NotFoundException;
 import com.example.sunhan.domain.repository.StoreRepository;
 import com.example.sunhan.domain.repository.UserRepository;
@@ -20,12 +19,7 @@ public class StoreService {
     private final StoreRepository storeRepository;
     private final UserRepository userRepository;
 
-    public void createStore(CreateStoreRequestDto createStoreRequestDto) {
-
-        Long userId = createStoreRequestDto.userId();
-        String name = createStoreRequestDto.name();
-        String phoneNumber = createStoreRequestDto.phoneNumber();
-        String address = createStoreRequestDto.address();
+    public void createStore(Long userId, String name, String phoneNumber, String address) {
 
         User user = userRepository.findById(userId)
                 .orElseThrow(()-> new NotFoundException("User Not Found"));
