@@ -4,6 +4,7 @@ import com.example.sunhan.domain.domain.Coupon;
 import com.example.sunhan.domain.domain.Payment;
 import com.example.sunhan.domain.domain.Store;
 import com.example.sunhan.domain.domain.User;
+import com.example.sunhan.domain.dto.payment.CreatePaymentRequestDto;
 import com.example.sunhan.domain.repository.CouponRepository;
 import com.example.sunhan.domain.repository.PaymentRepository;
 import com.example.sunhan.domain.repository.StoreRepository;
@@ -81,8 +82,10 @@ public class PaymentTests {
         Long userId = donate.getId();
         Long storeId = store.getId();
 
+        CreatePaymentRequestDto createPaymentRequestDto = new CreatePaymentRequestDto(storeId, userId, 100);
+
         //주문 생성
-        paymentService.createPayment(storeId , userId, 100);
+        paymentService.createPayment(createPaymentRequestDto);
 
         //저장된 주문 확인
         List<Payment> payments = paymentRepository.findAll();
@@ -103,8 +106,10 @@ public class PaymentTests {
         Long userId = donate.getId();
         Long storeId = store.getId();
 
+        CreatePaymentRequestDto createPaymentRequestDto = new CreatePaymentRequestDto(storeId, userId, 100);
+
         //주문 생성
-        paymentService.createPayment(storeId , userId, 100);
+        paymentService.createPayment(createPaymentRequestDto);
         Payment payment = paymentRepository.findAll().get(0);
 
         //쿠폰 사용

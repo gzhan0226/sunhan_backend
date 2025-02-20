@@ -19,11 +19,7 @@ public class PaymentController {
     @PostMapping
     public ResponseEntity<String> createPayment(@ModelAttribute CreatePaymentRequestDto createPaymentRequestDto) {
 
-        Long storeId = createPaymentRequestDto.storeId();
-        Long userId = createPaymentRequestDto.userId();
-        int quantity = createPaymentRequestDto.quantity();
-
-        paymentService.createPayment(storeId, userId, quantity);
+        paymentService.createPayment(createPaymentRequestDto);
 
         return ResponseEntity.ok("선결제를 생성하였습니다");
     }
