@@ -1,26 +1,35 @@
 package com.example.sunhan.domain.controller;
 
-import com.example.sunhan.domain.dto.payment.CreatePaymentRequestDto;
+import com.example.sunhan.domain.dto.payment.request.InviteStoreRequestDto;
+import com.example.sunhan.domain.dto.payment.request.InviteUserRequestDto;
 import com.example.sunhan.domain.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/payment")
+@RequestMapping("/api/payment")
 public class PaymentController {
 
     private final PaymentService paymentService;
 
-    @PostMapping
-    public ResponseEntity<String> createPayment(@ModelAttribute CreatePaymentRequestDto createPaymentRequestDto) {
+    @PostMapping("/invite/store")
+    public ResponseEntity<String> inviteStore(@RequestBody InviteStoreRequestDto inviteStoreRequestDto) {
+        Long userId = inviteStoreRequestDto.userId();
+        int quantity = inviteStoreRequestDto.quantity();
 
-        paymentService.createPayment(createPaymentRequestDto);
-
-        return ResponseEntity.ok("선결제를 생성하였습니다");
+        paymentService.createStoreInvitement(userId,quantity);
+        return ResponseEntity.ok("초대를 전송했습니다");
     }
+
+    @PostMapping("/invite/user")
+    public ResponseEntity<String> inviteUser(@RequestBody InviteUserRequestDto inviteUserRequestDto) {
+        Long storeId = inviteUserRequestDto.storeId();
+        int quantity = inviteUserRequestDto.quantity();
+
+        paymentService.createUserInvitement(storeId,quantity);
+        return ResponseEntity.ok("초대를 전송했습니다");
+    }
+
 }

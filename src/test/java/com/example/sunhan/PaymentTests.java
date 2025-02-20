@@ -1,10 +1,7 @@
 package com.example.sunhan;
 
-import com.example.sunhan.domain.domain.Coupon;
-import com.example.sunhan.domain.domain.Payment;
-import com.example.sunhan.domain.domain.Store;
-import com.example.sunhan.domain.domain.User;
-import com.example.sunhan.domain.dto.payment.CreatePaymentRequestDto;
+import com.example.sunhan.domain.domain.*;
+import com.example.sunhan.domain.exception.NotFoundException;
 import com.example.sunhan.domain.repository.CouponRepository;
 import com.example.sunhan.domain.repository.PaymentRepository;
 import com.example.sunhan.domain.repository.StoreRepository;
@@ -76,16 +73,19 @@ public class PaymentTests {
     }
 
     @Test
-    @DisplayName("주문 생성 테스트")
+    @DisplayName("가게 초대/수락 테스트")
     @Transactional
-    void createOrder_ShouldSaveOrder() {
+    void inviteStoreAndAccept_ShouldSavePayment() {
         Long userId = donate.getId();
         Long storeId = store.getId();
 
-        CreatePaymentRequestDto createPaymentRequestDto = new CreatePaymentRequestDto(storeId, userId, 100);
+        //사용자 -> 가게 초대
+        paymentService.createStoreInvitement(userId,100);
 
-        //주문 생성
-        paymentService.createPayment(createPaymentRequestDto);
+        //가게 초대 수락
+        Payment payment1 = paymentRepository.findByUser_Id(userId)
+                .orElseThrow(()->new NotFoundException("User Not Found"));
+        paymentService.acceptStoreInvitement(payment1.getUuidCode(),storeId);
 
         //저장된 주문 확인
         List<Payment> payments = paymentRepository.findAll();
@@ -96,6 +96,35 @@ public class PaymentTests {
         assertEquals(storeId, payment.getStore().getId());
         assertEquals(userId, payment.getUser().getId());
         assertEquals(100, payment.getQuantity());
+        assertEquals(PaymentStatus.ACCEPTED, payment.getStatus());
+
+    }
+
+    @Test
+    @DisplayName("사용자 초대/수락 테스트")
+    @Transactional
+    void inviteUserAndAccept_ShouldSavePayment() {
+        Long userId = donate.getId();
+        Long storeId = store.getId();
+
+        //가게 -> 사용자 초대
+        paymentService.createUserInvitement(storeId,100);
+
+        //사용자 초대 수락
+        Payment payment1 = paymentRepository.findByStore_Id(storeId)
+                .orElseThrow(()->new NotFoundException("Store Not Found"));
+        paymentService.acceptUserInvitement(payment1.getUuidCode(),userId);
+
+        //저장된 주문 확인
+        List<Payment> payments = paymentRepository.findAll();
+        assertEquals(1, payments.size());
+
+        Payment payment = payments.get(0);
+        System.out.println(payment.getStatus());
+        assertEquals(storeId, payment.getStore().getId());
+        assertEquals(userId, payment.getUser().getId());
+        assertEquals(100, payment.getQuantity());
+        assertEquals(PaymentStatus.ACCEPTED, payment.getStatus());
 
     }
 
@@ -106,10 +135,8 @@ public class PaymentTests {
         Long userId = donate.getId();
         Long storeId = store.getId();
 
-        CreatePaymentRequestDto createPaymentRequestDto = new CreatePaymentRequestDto(storeId, userId, 100);
-
         //주문 생성
-        paymentService.createPayment(createPaymentRequestDto);
+        paymentService.createPayment(storeId,userId,100);
         Payment payment = paymentRepository.findAll().get(0);
 
         //쿠폰 사용

@@ -48,15 +48,11 @@ public class Payment {
         this.quantity -= 1;
     }
 
-    public void updateQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
     public void updateStore(Store store) {
         this.store = store;
     }
-    public void updateUser(User user) {
 
+    public void updateUser(User user) {
         this.user = user;
     }
     public void updateStatus(PaymentStatus status) {
