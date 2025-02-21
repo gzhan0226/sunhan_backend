@@ -19,7 +19,7 @@ public class PaymentController {
         Long userId = inviteStoreRequestDto.userId();
         int quantity = inviteStoreRequestDto.quantity();
 
-        paymentService.createStoreInvitement(userId,quantity);
+        paymentService.createStoreInvitation(userId,quantity);
         return ResponseEntity.ok("초대를 전송했습니다");
     }
 
@@ -28,8 +28,10 @@ public class PaymentController {
         Long storeId = inviteUserRequestDto.storeId();
         int quantity = inviteUserRequestDto.quantity();
 
-        paymentService.createUserInvitement(storeId,quantity);
+        paymentService.createUserInvitation(storeId,quantity);
         return ResponseEntity.ok("초대를 전송했습니다");
     }
+
+
 
 }

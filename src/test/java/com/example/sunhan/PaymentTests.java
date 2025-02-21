@@ -80,12 +80,12 @@ public class PaymentTests {
         Long storeId = store.getId();
 
         //사용자 -> 가게 초대
-        paymentService.createStoreInvitement(userId,100);
+        paymentService.createStoreInvitation(userId,100);
 
         //가게 초대 수락
         Payment payment1 = paymentRepository.findByUser_Id(userId)
                 .orElseThrow(()->new NotFoundException("User Not Found"));
-        paymentService.acceptStoreInvitement(payment1.getUuidCode(),storeId);
+        paymentService.acceptStoreInvitation(payment1.getUuidCode(),storeId);
 
         //저장된 주문 확인
         List<Payment> payments = paymentRepository.findAll();
@@ -108,12 +108,12 @@ public class PaymentTests {
         Long storeId = store.getId();
 
         //가게 -> 사용자 초대
-        paymentService.createUserInvitement(storeId,100);
+        paymentService.createUserInvitation(storeId,100);
 
         //사용자 초대 수락
         Payment payment1 = paymentRepository.findByStore_Id(storeId)
                 .orElseThrow(()->new NotFoundException("Store Not Found"));
-        paymentService.acceptUserInvitement(payment1.getUuidCode(),userId);
+        paymentService.acceptUserInvitation(payment1.getUuidCode(),userId);
 
         //저장된 주문 확인
         List<Payment> payments = paymentRepository.findAll();

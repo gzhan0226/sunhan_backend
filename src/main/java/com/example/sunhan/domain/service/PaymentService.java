@@ -39,7 +39,7 @@ public class PaymentService {
         paymentRepository.save(payment);
     }
 
-    public void createStoreInvitement(Long userId, int quantity) { // 사용자 -> 가게
+    public void createStoreInvitation(Long userId, int quantity) { // 사용자 -> 가게
         User user = userRepository.findById(userId)
                 .orElseThrow(()->new NotFoundException("User Not Found"));
 
@@ -54,7 +54,7 @@ public class PaymentService {
         paymentRepository.save(payment);
     }
 
-    public void createUserInvitement(Long storeId, int quantity) { // 가게 -> 사용자
+    public void createUserInvitation(Long storeId, int quantity) { // 가게 -> 사용자
         Store store = storeRepository.findById(storeId)
                 .orElseThrow(()->new NotFoundException("Store Not Found"));
 
@@ -69,7 +69,7 @@ public class PaymentService {
         paymentRepository.save(payment);
     }
 
-    public void acceptStoreInvitement(String uuid, Long storeId) {
+    public void acceptStoreInvitation(String uuid, Long storeId) {
         Payment payment = paymentRepository.findByUuidCode(uuid)
                 .orElseThrow(()->new NotFoundException("Invalid uuid"));
 
@@ -80,7 +80,7 @@ public class PaymentService {
         payment.updateStatus(PaymentStatus.ACCEPTED);
     }
 
-    public void acceptUserInvitement(String uuid, Long userId) {
+    public void acceptUserInvitation(String uuid, Long userId) {
         Payment payment = paymentRepository.findByUuidCode(uuid)
                 .orElseThrow(()->new NotFoundException("Invalid uuid"));
 
@@ -90,4 +90,6 @@ public class PaymentService {
         payment.updateUser(user);
         payment.updateStatus(PaymentStatus.ACCEPTED);
     }
+
+   
 }
