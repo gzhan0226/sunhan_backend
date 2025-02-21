@@ -18,7 +18,11 @@ public class StoreController {
 
     @PostMapping
     public ResponseEntity<String> createStore(@ModelAttribute CreateStoreRequestDto createStoreRequestDto) {
-        storeService.createStore(createStoreRequestDto);
+        Long userId = createStoreRequestDto.userId();
+        String name = createStoreRequestDto.name();
+        String phoneNumber = createStoreRequestDto.phoneNumber();
+        String address = createStoreRequestDto.address();
+        storeService.createStore(userId, name, phoneNumber, address);
         return ResponseEntity.ok("가게 정보를 추가하였습니다");
     }
 }

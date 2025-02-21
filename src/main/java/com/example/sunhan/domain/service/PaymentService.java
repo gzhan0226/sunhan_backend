@@ -4,6 +4,7 @@ import com.example.sunhan.domain.domain.Payment;
 import com.example.sunhan.domain.domain.PaymentStatus;
 import com.example.sunhan.domain.domain.Store;
 import com.example.sunhan.domain.domain.User;
+import com.example.sunhan.domain.exception.InvalidInvitationException;
 import com.example.sunhan.domain.exception.NotFoundException;
 import com.example.sunhan.domain.repository.PaymentRepository;
 import com.example.sunhan.domain.repository.StoreRepository;
@@ -91,5 +92,25 @@ public class PaymentService {
         payment.updateStatus(PaymentStatus.ACCEPTED);
     }
 
-   
+   public Payment findUserInvitation(String uuid) {
+        Payment payment = paymentRepository.findByUuidCodeWithStore(uuid)
+                .orElseThrow(()->new NotFoundException("Invalid uuid"));
+        if (payment.getStatus().equals(PaymentStatus.WAITING)){
+            return payment;
+        }
+        else {
+            throw new InvalidInvitationException("잘못된 초대 링크입니다");
+        }
+   }
+
+   public Payment findStoreInvitation(String uuid) {
+        Payment payment = paymentRepository.findByUuidCodeWithUser(uuid)
+                .orElseThrow(()->new NotFoundException("Invalid uuid"));
+        if (payment.getStatus().equals(PaymentStatus.WAITING)) {
+            return payment;
+        }
+        else {
+            throw new InvalidInvitationException("잘못된 초대 링크입니다");
+        }
+   }
 }
