@@ -4,10 +4,7 @@ import com.example.sunhan.domain.dto.store.CreateStoreRequestDto;
 import com.example.sunhan.domain.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,7 +14,7 @@ public class StoreController {
     private final StoreService storeService;
 
     @PostMapping
-    public ResponseEntity<String> createStore(@ModelAttribute CreateStoreRequestDto createStoreRequestDto) {
+    public ResponseEntity<String> createStore(@RequestBody CreateStoreRequestDto createStoreRequestDto) {
         Long userId = createStoreRequestDto.userId();
         String name = createStoreRequestDto.name();
         String phoneNumber = createStoreRequestDto.phoneNumber();

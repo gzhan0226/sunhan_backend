@@ -1,6 +1,8 @@
 package com.example.sunhan.domain.controller;
 
 import com.example.sunhan.domain.domain.Payment;
+import com.example.sunhan.domain.dto.payment.request.AcceptStoreInvitationRequestDto;
+import com.example.sunhan.domain.dto.payment.request.AcceptUserInvitationRequestDto;
 import com.example.sunhan.domain.dto.payment.request.InviteStoreRequestDto;
 import com.example.sunhan.domain.dto.payment.request.InviteUserRequestDto;
 import com.example.sunhan.domain.dto.payment.response.FindStoreInvitationResponseDto;
@@ -22,8 +24,7 @@ public class PaymentController {
         Long userId = inviteStoreRequestDto.userId();
         int quantity = inviteStoreRequestDto.quantity();
 
-        paymentService.createStoreInvitation(userId,quantity);
-        return ResponseEntity.ok("초대를 전송했습니다");
+        return ResponseEntity.ok(paymentService.createStoreInvitation(userId,quantity));
     }
 
     @PostMapping("/invite/user")
@@ -31,14 +32,14 @@ public class PaymentController {
         Long storeId = inviteUserRequestDto.storeId();
         int quantity = inviteUserRequestDto.quantity();
 
-        paymentService.createUserInvitation(storeId,quantity);
-        return ResponseEntity.ok("초대를 전송했습니다");
+        return ResponseEntity.ok(paymentService.createUserInvitation(storeId,quantity));
     }
     @GetMapping("/invite/store/{uuid}")
     public ResponseEntity<FindStoreInvitationResponseDto> findStoreInvitation(@PathVariable("uuid") String uuid) {
         Payment payment = paymentService.findStoreInvitation(uuid);
         FindStoreInvitationResponseDto findStoreInvitationResponseDto = new FindStoreInvitationResponseDto(
-                payment.getId(),payment.getUser(), payment.getQuantity());
+                payment.getId(),payment.getUser().getId(),payment.getUser().getUsername(), payment.getUser().getProfileImg(),
+                payment.getQuantity());
         return ResponseEntity.ok(findStoreInvitationResponseDto);
     }
 
@@ -46,7 +47,24 @@ public class PaymentController {
     public ResponseEntity<FindUserInvitationResponseDto> findUserInvitation(@PathVariable("uuid") String uuid) {
         Payment payment = paymentService.findUserInvitation(uuid);
         FindUserInvitationResponseDto findUserInvitationResponseDto = new FindUserInvitationResponseDto(
-                payment.getId(), payment.getStore(), payment.getQuantity());
+                payment.getId(), payment.getStore().getId(), payment.getStore().getName(), payment.getStore().getPhoneNumber()
+                , payment.getStore().getAddress(), payment.getQuantity());
         return ResponseEntity.ok(findUserInvitationResponseDto);
+    }
+
+    @PostMapping("/invite/store/{uuid}")
+    public ResponseEntity<String> acceptStoreInvitation(@PathVariable("uuid") String uuid,
+                                                        @RequestBody AcceptStoreInvitationRequestDto acceptStoreInvitationRequestDto) {
+        Long storeId = acceptStoreInvitationRequestDto.storeId();
+        paymentService.acceptStoreInvitation(uuid,storeId);
+        return ResponseEntity.ok("선결제가 완료되었습니다");
+    }
+
+    @PostMapping("/invite/user/{uuid}")
+    public ResponseEntity<String> acceptUserInvitation(@PathVariable("uuid") String uuid,
+                                                       @RequestBody AcceptUserInvitationRequestDto acceptUserInvitationRequestDto) {
+        Long userId = acceptUserInvitationRequestDto.userId();
+        paymentService.acceptUserInvitation(uuid,userId);
+        return ResponseEntity.ok("선결제가 완료되었습니다");
     }
 }

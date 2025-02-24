@@ -4,5 +4,5 @@ import com.example.sunhan.domain.domain.User;
 import lombok.Builder;
 
 @Builder
-public record FindStoreInvitationResponseDto(Long id, User user, int quantity) {
+public record FindStoreInvitationResponseDto(Long id, Long userId, String username, String profileImg, int quantity) {
 }

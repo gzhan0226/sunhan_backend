@@ -40,7 +40,7 @@ public class PaymentService {
         paymentRepository.save(payment);
     }
 
-    public void createStoreInvitation(Long userId, int quantity) { // 사용자 -> 가게
+    public String createStoreInvitation(Long userId, int quantity) { // 사용자 -> 가게
         User user = userRepository.findById(userId)
                 .orElseThrow(()->new NotFoundException("User Not Found"));
 
@@ -53,9 +53,10 @@ public class PaymentService {
                 .status(PaymentStatus.WAITING)
                 .build();
         paymentRepository.save(payment);
+        return uuid;
     }
 
-    public void createUserInvitation(Long storeId, int quantity) { // 가게 -> 사용자
+    public String createUserInvitation(Long storeId, int quantity) { // 가게 -> 사용자
         Store store = storeRepository.findById(storeId)
                 .orElseThrow(()->new NotFoundException("Store Not Found"));
 
@@ -68,6 +69,7 @@ public class PaymentService {
                 .status(PaymentStatus.WAITING)
                 .build();
         paymentRepository.save(payment);
+        return uuid;
     }
 
     public void acceptStoreInvitation(String uuid, Long storeId) {
@@ -77,8 +79,13 @@ public class PaymentService {
         Store store = storeRepository.findById(storeId)
                 .orElseThrow(()->new NotFoundException("Store Not Found"));
 
-        payment.updateStore(store);
-        payment.updateStatus(PaymentStatus.ACCEPTED);
+        if(payment.getStatus().equals(PaymentStatus.WAITING)) {
+            payment.updateStore(store);
+            payment.updateStatus(PaymentStatus.ACCEPTED);
+        }
+        else {
+            throw new InvalidInvitationException("유효하지 않은 초대입니다");
+        }
     }
 
     public void acceptUserInvitation(String uuid, Long userId) {
@@ -88,29 +95,22 @@ public class PaymentService {
         User user = userRepository.findById(userId)
                 .orElseThrow(()->new NotFoundException("User Not Found"));
 
-        payment.updateUser(user);
-        payment.updateStatus(PaymentStatus.ACCEPTED);
+        if (payment.getStatus().equals(PaymentStatus.WAITING)) {
+            payment.updateUser(user);
+            payment.updateStatus(PaymentStatus.ACCEPTED);
+        }
+        else {
+            throw new InvalidInvitationException("유효하지 않은 초대입니다");
+        }
     }
 
    public Payment findUserInvitation(String uuid) {
-        Payment payment = paymentRepository.findByUuidCodeWithStore(uuid)
+        return paymentRepository.findByUuidCodeWithStore(uuid)
                 .orElseThrow(()->new NotFoundException("Invalid uuid"));
-        if (payment.getStatus().equals(PaymentStatus.WAITING)){
-            return payment;
-        }
-        else {
-            throw new InvalidInvitationException("잘못된 초대 링크입니다");
-        }
    }
 
    public Payment findStoreInvitation(String uuid) {
-        Payment payment = paymentRepository.findByUuidCodeWithUser(uuid)
+        return paymentRepository.findByUuidCodeWithUser(uuid)
                 .orElseThrow(()->new NotFoundException("Invalid uuid"));
-        if (payment.getStatus().equals(PaymentStatus.WAITING)) {
-            return payment;
-        }
-        else {
-            throw new InvalidInvitationException("잘못된 초대 링크입니다");
-        }
    }
 }
