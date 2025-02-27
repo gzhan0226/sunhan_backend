@@ -1,7 +1,10 @@
 package com.example.sunhan.domain.exception;
 
-public class InvalidInvitationException extends RuntimeException{
+import com.example.sunhan.global.error.ErrorCode;
+import com.example.sunhan.global.error.ExceptionBase;
+
+public class InvalidInvitationException extends ExceptionBase {
     public InvalidInvitationException(String message) {
-        super(message);
+        super(message, ErrorCode.INVALID_INVITATION);
     }
 }

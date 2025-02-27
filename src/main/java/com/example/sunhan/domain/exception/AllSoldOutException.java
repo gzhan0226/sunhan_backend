@@ -1,7 +1,10 @@
 package com.example.sunhan.domain.exception;
 
-public class AllSoldOutException extends RuntimeException{
+import com.example.sunhan.global.error.ErrorCode;
+import com.example.sunhan.global.error.ExceptionBase;
+
+public class AllSoldOutException extends ExceptionBase {
     public AllSoldOutException(String message) {
-        super(message);
+        super(message, ErrorCode.ALL_SOLD_OUT);
     }
 }
