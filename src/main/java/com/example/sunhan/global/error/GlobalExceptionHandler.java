@@ -1,6 +1,5 @@
 package com.example.sunhan.global.error;
 
-
 import com.example.sunhan.domain.exception.AllSoldOutException;
 import com.example.sunhan.domain.exception.InvalidInvitationException;
 import com.example.sunhan.domain.exception.NotFoundException;
