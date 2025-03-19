@@ -141,7 +141,7 @@ public class PaymentTests {
 
         //쿠폰 사용
         for (int i=0;i<100; i++) {
-            couponService.useCoupon(payment.getId(), "111");
+            couponService.useCoupon(payment.getUuidCode(), userId,"111");
         }
 
         List<Coupon> coupons = couponRepository.findAll();

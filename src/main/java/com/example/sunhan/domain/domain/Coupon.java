@@ -24,12 +24,17 @@ public class Coupon extends BaseEntity {
     @JoinColumn(name = "payment_id")
     private Payment payment;
 
+    @OneToOne
+    @JoinColumn(name = "user_id") //쿠폰 사용자 id
+    private User user;
+
     @Column(name = "used_at")
     @DateTimeFormat
     private LocalDateTime usedAt;
 
     @Builder
-    Coupon(Payment payment, LocalDateTime usedAt) {
+    Coupon(Payment payment, User user, LocalDateTime usedAt) {
+        this.user = user;
         this.payment = payment;
         this.usedAt = usedAt;
     }
