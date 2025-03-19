@@ -46,6 +46,15 @@ public class PaymentService {
 
         String uuid = UUID.randomUUID().toString();
 
+        while(true) {
+            if (paymentRepository.existsByUuidCode(uuid)) {
+                break;
+            }
+            else {
+                uuid = UUID.randomUUID().toString();
+            }
+        }
+
         Payment payment = Payment.builder()
                 .user(user)
                 .quantity(quantity)
@@ -61,6 +70,15 @@ public class PaymentService {
                 .orElseThrow(()->new NotFoundException("Store Not Found"));
 
         String uuid = UUID.randomUUID().toString();
+
+        while(true) {
+            if (paymentRepository.existsByUuidCode(uuid)) {
+                break;
+            }
+            else {
+                uuid = UUID.randomUUID().toString();
+            }
+        }
 
         Payment payment = Payment.builder()
                 .store(store)

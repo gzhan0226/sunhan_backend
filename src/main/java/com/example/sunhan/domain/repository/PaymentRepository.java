@@ -19,4 +19,6 @@ public interface PaymentRepository extends JpaRepository<Payment,Long> {
 
     @Query("SELECT p FROM Payment p JOIN FETCH p.user WHERE p.uuidCode = :uuidCode")
     Optional<Payment> findByUuidCodeWithUser(String uuidCode);
+
+    public boolean existsByUuidCode(String uuid);
 }

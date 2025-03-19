@@ -54,7 +54,6 @@ public class CouponService {
                 couponRepository.save(Coupon.builder()
                                 .payment(payment)
                                 .user(user)
-                                .usedAt(LocalDateTime.now())
                                 .build());
                 payment.reduceQuantity();
             }

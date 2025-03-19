@@ -1,6 +1,7 @@
 package com.example.sunhan.domain.controller;
 
 
+import com.example.sunhan.domain.dto.coupon.request.ReadQRCodeRequestDto;
 import com.example.sunhan.domain.service.CouponService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,15 @@ public class CouponController {
     private final CouponService couponService;
 
     @GetMapping("/qr/{uuid}")
-    public ResponseEntity<byte[]> createQRCode(@PathVariable("uuid") String uuidCode) {
-        return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(couponService.createCoupon(uuidCode));
+    public ResponseEntity<byte[]> createQRCode(@PathVariable("uuid") String uuid) {
+        return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(couponService.createCoupon(uuid));
+    }
+
+    @PostMapping("/qr/{uuid}")
+    public ResponseEntity<String> readQRCode(@PathVariable("uuid") String uuid, @RequestBody ReadQRCodeRequestDto readQRCodeRequestDto) {
+        Long userId = readQRCodeRequestDto.userId();
+        String storeCode = readQRCodeRequestDto.storeCode();
+        couponService.useCoupon(uuid,userId,storeCode);
+        return ResponseEntity.ok().body("결제 완료!");
     }
 }

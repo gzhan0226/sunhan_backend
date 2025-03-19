@@ -1,6 +1,6 @@
 package com.example.sunhan.domain.controller;
 
-import com.example.sunhan.domain.dto.store.CreateStoreRequestDto;
+import com.example.sunhan.domain.dto.store.request.CreateStoreRequestDto;
 import com.example.sunhan.domain.service.StoreService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
