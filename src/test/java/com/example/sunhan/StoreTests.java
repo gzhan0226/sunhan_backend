@@ -35,13 +35,13 @@ public class StoreTests {
     @BeforeEach
     void setUp() {
         donate = User.builder()
-                .username("donate person")
+                .nickname("donate person")
                 .password("1234")
                 .profileImg("test.png")
                 .build();
 
         owner = User.builder()
-                .username("store owner")
+                .nickname("store owner")
                 .password("1234")
                 .profileImg("test.png")
                 .build();

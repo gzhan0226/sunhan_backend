@@ -16,17 +16,21 @@ public class User {
     @Column(name = "id", updatable = false)
     private Long id;
 
-    @Column(name = "username")
+    @Column(name = "username", unique = true)
     private String username;
 
-    @Column(name = "password")
+    @Column(name = "nickname")
+    private String nickname;
+
+    @Column(name="password")
     private String password;
 
     @Column(name="profile_img")
     private String profileImg;
 
     @Builder
-    User(String username, String password, String profileImg) {
+    User(String nickname, String username, String password, String profileImg) {
+        this.nickname = nickname;
         this.username = username;
         this.password = password;
         this.profileImg = profileImg;
