@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Random;
 
 @Service
@@ -63,5 +64,9 @@ public class StoreService {
 
     public boolean isStoreCodeValid (String storeCode) {
         return storeRepository.existsByStoreCode(storeCode);
+    }
+
+    public List<Store> findAllByUserId(Long userId) {
+        return storeRepository.findAllByUserId(userId);
     }
 }
