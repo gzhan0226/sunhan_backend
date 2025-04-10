@@ -1,14 +1,13 @@
 package com.example.sunhan.global.auth.oauth.dto;
 
+import lombok.RequiredArgsConstructor;
+
 import java.util.Map;
 
+@RequiredArgsConstructor
 public class KakaoResponse implements OAuth2Response {
 
     private final Map<String, Object> attributes;
-
-    public KakaoResponse(Map<String, Object> attributes) {
-        this.attributes = attributes;
-    }
 
     @Override
     public String getProvider() {
