@@ -4,6 +4,7 @@ import com.example.sunhan.domain.domain.Payment;
 import com.example.sunhan.domain.dto.payment.request.AcceptStoreInvitationRequestDto;
 import com.example.sunhan.domain.dto.payment.request.InviteStoreRequestDto;
 import com.example.sunhan.domain.dto.payment.request.InviteUserRequestDto;
+import com.example.sunhan.domain.dto.payment.response.FindMyPaymentResponseDto;
 import com.example.sunhan.domain.dto.payment.response.FindStoreInvitationResponseDto;
 import com.example.sunhan.domain.dto.payment.response.FindUserInvitationResponseDto;
 import com.example.sunhan.domain.service.PaymentService;
@@ -14,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -72,10 +75,21 @@ public class PaymentController {
 
     @PostMapping("/invite/user/{uuid}")
     @Operation(summary = "가게 -> 유저 선결제 승인", description = "가게가 유저에 보낸 선결제 요청을 승인합니다")
-    public ResponseEntity<String> acceptUserInvitation(@PathVariable("uuid") String uuid,
-                                                       @AuthenticationPrincipal CustomOAuth2User user) {
+    public ResponseEntity<String> acceptUserInvitation(@PathVariable("uuid") String uuid, @AuthenticationPrincipal CustomOAuth2User user) {
         Long userId = user.getUserId();
         paymentService.acceptUserInvitation(uuid,userId);
         return ResponseEntity.ok("선결제가 완료되었습니다");
+    }
+
+    @GetMapping("/mypayment")
+    @Operation(summary = "내 선결제 내역 조회", description = "로그인 된 계정 선결제 내역 전체 조회합니다")
+    public ResponseEntity<List<FindMyPaymentResponseDto>> findMyPayment(@AuthenticationPrincipal CustomOAuth2User user) {
+        Long userId =user.getUserId();
+        List<Payment> payments= paymentService.findAllPaymentByUserId(userId);
+        List<FindMyPaymentResponseDto> findMyPaymentResponseDtos = payments.stream()
+                .map(payment -> new FindMyPaymentResponseDto(
+                        payment.getId(), payment.getQuantity(), payment.getUuidCode(), payment.getStatus()
+                )).toList();
+        return ResponseEntity.ok(findMyPaymentResponseDtos);
     }
 }

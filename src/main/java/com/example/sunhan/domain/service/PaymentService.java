@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -130,5 +131,9 @@ public class PaymentService {
    public Payment findStoreInvitation(String uuid) {
         return paymentRepository.findByUuidCodeWithUser(uuid)
                 .orElseThrow(()->new NotFoundException("Invalid uuid"));
+   }
+
+   public List<Payment> findAllPaymentByUserId (Long userId) {
+        return paymentRepository.findAllByUserId(userId);
    }
 }
