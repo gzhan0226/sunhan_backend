@@ -134,6 +134,8 @@ public class PaymentService {
    }
 
    public List<Payment> findAllPaymentByUserId (Long userId) {
-        return paymentRepository.findAllByUserId(userId);
+        return paymentRepository.findAllByUserIdWithStore(userId);
    }
+
+   public List<Payment> findAllPaymentByStoreUserId (Long userId) { return paymentRepository.findAllByStoreUserIdWithStore(userId); }
 }

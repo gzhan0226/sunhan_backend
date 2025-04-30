@@ -21,9 +21,11 @@ public interface PaymentRepository extends JpaRepository<Payment,Long> {
     @Query("SELECT p FROM Payment p JOIN FETCH p.user WHERE p.uuidCode = :uuidCode")
     Optional<Payment> findByUuidCodeWithUser(String uuidCode);
 
-    public List<Payment> findAllByUserId(Long userId);
+    @Query("SELECT p FROM Payment p JOIN FETCH p.store WHERE p.user.id = :userId")
+    public List<Payment> findAllByUserIdWithStore(Long userId);
 
-    public List<Payment> findAllByStoreId(Long storeId);
+    @Query("SELECT p FROM Payment p JOIN FETCH p.store s WHERE s.user.id = :userId")
+    public List<Payment> findAllByStoreUserIdWithStore(Long userId);
 
     public boolean existsByUuidCode(String uuid);
 }

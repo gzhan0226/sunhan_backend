@@ -82,13 +82,27 @@ public class PaymentController {
     }
 
     @GetMapping("/mypayment")
-    @Operation(summary = "내 선결제 내역 조회", description = "로그인 된 계정 선결제 내역 전체 조회합니다")
+    @Operation(summary = "내 선결제 내역 조회", description = "로그인 된 유저의 선결제 내역 전체 조회합니다")
     public ResponseEntity<List<FindMyPaymentResponseDto>> findMyPayment(@AuthenticationPrincipal CustomOAuth2User user) {
         Long userId =user.getUserId();
         List<Payment> payments= paymentService.findAllPaymentByUserId(userId);
         List<FindMyPaymentResponseDto> findMyPaymentResponseDtos = payments.stream()
                 .map(payment -> new FindMyPaymentResponseDto(
-                        payment.getId(), payment.getQuantity(), payment.getUuidCode(), payment.getStatus()
+                        payment.getId(), payment.getQuantity(), payment.getUuidCode(), payment.getStatus(),
+                        payment.getStore().getName(), payment.getStore().getPhoneNumber(), payment.getStore().getPhoneNumber()
+                )).toList();
+        return ResponseEntity.ok(findMyPaymentResponseDtos);
+    }
+
+    @GetMapping("/mypayment/store")
+    @Operation(summary = "내 가게 선결제 내역 조회", description = "로그인 된 유저의 가게의 선결제 내역 전체 조회합니다")
+    public ResponseEntity<List<FindMyPaymentResponseDto>> findMyStorePayment(@AuthenticationPrincipal CustomOAuth2User user) {
+        Long userId =user.getUserId();
+        List<Payment> payments= paymentService.findAllPaymentByStoreUserId(userId);
+        List<FindMyPaymentResponseDto> findMyPaymentResponseDtos = payments.stream()
+                .map(payment -> new FindMyPaymentResponseDto(
+                        payment.getId(), payment.getQuantity(), payment.getUuidCode(), payment.getStatus(),
+                        payment.getStore().getName(), payment.getStore().getPhoneNumber(), payment.getStore().getPhoneNumber()
                 )).toList();
         return ResponseEntity.ok(findMyPaymentResponseDtos);
     }
