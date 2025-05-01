@@ -7,6 +7,8 @@ import lombok.Getter;
 @Getter
 public enum ErrorCode {
 
+    UNAUTHORIZED(4030, "UNAUTHORIZED"),
+
     NOT_FOUND(4040, "NOT_FOUND"),
 
     ALL_SOLD_OUT(4090,"ALL_SOLD_OUT"),

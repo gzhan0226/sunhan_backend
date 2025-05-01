@@ -3,6 +3,7 @@ package com.example.sunhan.global.error;
 import com.example.sunhan.domain.exception.AllSoldOutException;
 import com.example.sunhan.domain.exception.InvalidInvitationException;
 import com.example.sunhan.domain.exception.NotFoundException;
+import com.example.sunhan.domain.exception.UnauthorizedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -25,6 +26,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(InvalidInvitationException.class)
     public ResponseEntity<ErrorResponse> handleInvalidInvitationException(InvalidInvitationException ex) {
+        ErrorResponse response = new ErrorResponse(ex);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidInvitationException(UnauthorizedException ex) {
         ErrorResponse response = new ErrorResponse(ex);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }

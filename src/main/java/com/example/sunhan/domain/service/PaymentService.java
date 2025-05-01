@@ -6,6 +6,7 @@ import com.example.sunhan.domain.domain.Store;
 import com.example.sunhan.domain.domain.User;
 import com.example.sunhan.domain.exception.InvalidInvitationException;
 import com.example.sunhan.domain.exception.NotFoundException;
+import com.example.sunhan.domain.exception.UnauthorizedException;
 import com.example.sunhan.domain.repository.PaymentRepository;
 import com.example.sunhan.domain.repository.StoreRepository;
 import com.example.sunhan.domain.repository.UserRepository;
@@ -138,4 +139,17 @@ public class PaymentService {
    }
 
    public List<Payment> findAllPaymentByStoreUserId (Long userId) { return paymentRepository.findAllByStoreUserIdWithStore(userId); }
+
+    public Payment getPaymentDetail (Long id, Long userId) {
+        Payment payment = paymentRepository.findByIdWithStore(id)
+                .orElseThrow(() -> new NotFoundException("없는 선결제 내역입니다"));
+
+        if (payment.getUser().getId().equals(userId) || payment.getStore().getUser().getId().equals(userId)) { //기부자이거나 기부 받은 가게 주인
+            return payment;
+        }
+        else {
+            throw new UnauthorizedException("유저의 선결제 내역이 아닙니다");
+        }
+    }
+
 }
